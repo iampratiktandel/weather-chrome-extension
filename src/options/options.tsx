@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import './options.css'
 
 const App: React.FC<{}> = () => {
@@ -10,6 +10,8 @@ const App: React.FC<{}> = () => {
   )
 }
 
-const root = document.createElement('div')
-document.body.appendChild(root)
-ReactDOM.render(<App />, root)
+
+const rootElement = document.createElement('div');
+document.body.appendChild(rootElement);
+const root = ReactDOM.createRoot(rootElement);
+root.render((<App />)); 
