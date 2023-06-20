@@ -9,16 +9,18 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { Box, Grid, IconButton, InputBase, Paper } from '@mui/material';
 import './popup.css';
 import WeatherCard from './WeatherCard/WeatherCard';
-import { getStoredCities, setStoredCities } from '../utils/storage';
+import { LocalStorageOptions, getStoredCities, getStoredOptions, setStoredCities, setStoredOptions } from '../utils/storage';
 
 const App: React.FC<{}> = () => {
   const [cities, setCities] = useState<string[]>([]);
   const [cityInput, setCityInput] = useState<string>('');
+  const [options, setOptions] = useState<LocalStorageOptions | null>(null);
 
   useEffect(() => {
     getStoredCities().then((cities: string[]) => setCities(cities));
+    getStoredOptions().then((options) => setOptions(options));
   }, [])
-  
+
   const handleCityBtnClick = () => {
     if (cityInput === '') {
       return;
@@ -38,9 +40,23 @@ const App: React.FC<{}> = () => {
     });
   }
 
+  const handleTempScaleBtnClick = () => {
+    const updatedOptions: LocalStorageOptions = {
+      ...options,
+      tempScale: options.tempScale === 'metric' ? 'imperial' : 'metric'
+    };
+    setStoredOptions(updatedOptions).then(() => {
+      setOptions(updatedOptions);
+    })
+  }
+
+  if (!options) {
+    return null;
+  }
+
   return (
     <Box mx="8px" my="16px">
-      <Grid container>
+      <Grid container justifyContent="space-evenly">
         <Grid item>
           <Paper>
             <Box px="15px" py="5px">
@@ -54,9 +70,23 @@ const App: React.FC<{}> = () => {
             </Box>
           </Paper>
         </Grid>
+        <Grid item>
+          <Paper>
+            <Box py="4px">
+              <IconButton onClick={handleTempScaleBtnClick}>
+                {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
       </Grid>
       {cities.map((city, index) => (
-        <WeatherCard city={city} key={index} onDelete={() => handleCityDeleteBtnClick(index)}/>
+        <WeatherCard
+          city={city}
+          tempScale={options.tempScale}
+          key={index}
+          onDelete={() => handleCityDeleteBtnClick(index)} 
+        />
       ))}
     </Box>
   )
