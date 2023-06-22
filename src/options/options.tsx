@@ -5,7 +5,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './options.css'
-import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@mui/material';
 import { LocalStorageOptions, getStoredOptions, setStoredOptions } from '../utils/storage';
 
 type FormState = 'ready' | 'saving';
@@ -34,6 +34,13 @@ const App: React.FC<{}> = () => {
     });
   }
 
+  const handleAutoOverlayChange = (hasAutoOverlay: boolean) => {
+    setOptions({
+      ...options,
+      hasAutoOverlay
+    })
+  }
+
   if (!options) {
     return null;
   }
@@ -51,7 +58,18 @@ const App: React.FC<{}> = () => {
             <Grid item>
               <Typography variant="body1">Home city name</Typography>
               <TextField fullWidth placeholder="Enter a home city name"
-                value={options.homeCity} onChange={event => handleHomeCityChange(event.target.value)}
+                value={options.homeCity}
+                onChange={event => handleHomeCityChange(event.target.value)}
+                disabled={isFieldDisabled}
+              />
+            </Grid>
+            <Grid item>
+              <Typography variant="body1">Enable overlay</Typography>
+              <Switch
+                color="primary"
+                checked={options.hasAutoOverlay}
+                onChange={(event, checked) => handleAutoOverlayChange(checked)}
+                disabled={isFieldDisabled}
               />
             </Grid>
             <Grid item>
