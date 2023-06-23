@@ -1,7 +1,8 @@
+import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { OpenWeatherData, OpenWeatherTempScale, fetchOpenWeatherData, getWeatherIconSrc } from '../../utils/api';
-import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import './WeatherCard.css';
+import { LocalStorageOptions, getStoredOptions } from '../../utils/storage';
 
 const WeatherCardContainer: React.FC<{
     children: React.ReactNode
@@ -32,12 +33,14 @@ const WeatherCard: React.FC<{
 }> = ({ city, tempScale, onDelete }) => {
     const [weatherData, setWeatherData] = useState<OpenWeatherData | null>(null);
     const [cardState, setCardState] = useState<WeatherCardState>('loading');
+    const [options, setOptions] = useState<LocalStorageOptions | null>(null);
 
     useEffect(() => {
         fetchOpenWeatherData(city, tempScale)
             .then((data) => {
                 setWeatherData(data);
                 setCardState('ready');
+                getStoredOptions().then((options) => setOptions(options));
             })
             .catch((err) => setCardState('error'))
     }, [city, tempScale])
@@ -58,9 +61,13 @@ const WeatherCard: React.FC<{
             <Grid container justifyContent="space-around">
                 <Grid item>
                     <Typography className="weatherCard-title">{weatherData?.name}</Typography>
-                    <Typography className="weatherCard-temp">{Math.round(weatherData?.main?.temp)}</Typography>
+                    <Typography className="weatherCard-temp">
+                        {Math.round(weatherData?.main?.temp)}
+                        {options?.tempScale === 'metric' ? '\u2103' : '\u2109'}
+                    </Typography>
                     <Typography className="weatherCard-body">
                         Feels like {Math.round(weatherData?.main?.feels_like)}
+                        {options?.tempScale === 'metric' ? '\u2103' : '\u2109'}
                     </Typography>
                 </Grid>
                 <Grid item>

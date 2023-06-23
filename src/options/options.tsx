@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom/client';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import './options.css'
-import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom/client';
 import { LocalStorageOptions, getStoredOptions, setStoredOptions } from '../utils/storage';
+import './options.css';
 
 type FormState = 'ready' | 'saving';
 
@@ -34,12 +34,12 @@ const App: React.FC<{}> = () => {
     });
   }
 
-  const handleAutoOverlayChange = (hasAutoOverlay: boolean) => {
-    setOptions({
-      ...options,
-      hasAutoOverlay
-    })
-  }
+  // const handleAutoOverlayChange = (hasAutoOverlay: boolean) => {
+  //   setOptions({
+  //     ...options,
+  //     hasAutoOverlay
+  //   })
+  // }
 
   if (!options) {
     return null;
@@ -63,7 +63,7 @@ const App: React.FC<{}> = () => {
                 disabled={isFieldDisabled}
               />
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Typography variant="body1">Enable overlay</Typography>
               <Switch
                 color="primary"
@@ -71,7 +71,7 @@ const App: React.FC<{}> = () => {
                 onChange={(event, checked) => handleAutoOverlayChange(checked)}
                 disabled={isFieldDisabled}
               />
-            </Grid>
+            </Grid> */}
             <Grid item>
               <Button variant="contained" color="primary"
                 onClick={handleSaveBtnClick} disabled={isFieldDisabled}

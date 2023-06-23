@@ -1,5 +1,5 @@
 import { fetchOpenWeatherData } from "../utils/api";
-import { getStoredCities, getStoredOptions, setStoredCities, setStoredOptions } from "../utils/storage"
+import { getStoredCities, getStoredOptions, setStoredCities, setStoredOptions } from "../utils/storage";
 
 chrome.runtime.onInstalled.addListener(() => {
   setStoredCities([]);
@@ -19,7 +19,6 @@ chrome.runtime.onInstalled.addListener(() => {
     periodInMinutes: 60
   })
 });
-
 
 chrome.contextMenus.onClicked.addListener((event) => {
   getStoredCities().then((cities) => {

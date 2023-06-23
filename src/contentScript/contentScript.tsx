@@ -1,10 +1,10 @@
+import { Card } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import WeatherCard from './WeatherCard/WeatherCard';
-import './contentScript.css';
-import { Card } from '@mui/material';
-import { LocalStorageOptions, getStoredOptions } from '../utils/storage';
+import WeatherCard from '../components/WeatherCard/WeatherCard';
 import { Messages } from '../utils/messages';
+import { LocalStorageOptions, getStoredOptions } from '../utils/storage';
+import './contentScript.css';
 
 const App: React.FC<{}> = () => {
     const [options, setOptions] = useState<LocalStorageOptions | null>(null);
